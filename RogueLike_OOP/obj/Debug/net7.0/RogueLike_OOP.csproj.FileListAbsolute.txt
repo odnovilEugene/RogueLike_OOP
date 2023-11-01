@@ -1,0 +1,14 @@
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/bin/Debug/net7.0/RogueLike_OOP
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/bin/Debug/net7.0/RogueLike_OOP.deps.json
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/bin/Debug/net7.0/RogueLike_OOP.runtimeconfig.json
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/bin/Debug/net7.0/RogueLike_OOP.dll
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/bin/Debug/net7.0/RogueLike_OOP.pdb
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/RogueLike_OOP.GeneratedMSBuildEditorConfig.editorconfig
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/RogueLike_OOP.AssemblyInfoInputs.cache
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/RogueLike_OOP.AssemblyInfo.cs
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/RogueLike_OOP.csproj.CoreCompileInputs.cache
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/RogueLike_OOP.dll
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/refint/RogueLike_OOP.dll
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/RogueLike_OOP.pdb
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/RogueLike_OOP.genruntimeconfig.cache
+/Users/evgenius/Studentik/OOP/RogueLike_OOP/RogueLike_OOP/obj/Debug/net7.0/ref/RogueLike_OOP.dll
