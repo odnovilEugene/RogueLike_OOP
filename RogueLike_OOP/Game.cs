@@ -1,4 +1,5 @@
 using System.ComponentModel.Design;
+using System.IO.MemoryMappedFiles;
 using RogueLike.Components;
 using RogueLike.Components.Position;
 using RogueLike.Core;
@@ -15,7 +16,7 @@ namespace RogueLike
         {
             Map = new Map(depth, width, seed);
             Player = new Player(new Position2D(1, 1));
-            Enemies = GenerateEnemies(width / 3);
+            Enemies = GenerateEnemies(Map.Width / 3);
         }
 
         private LivingGameObject[] GenerateEnemies(int n)
@@ -47,20 +48,41 @@ namespace RogueLike
         public void GameCycle()
         {
             ConsoleKey key;
-            PlaceEntitiesOnField(Player, Enemies);
+            PlaceEntities(Player, Enemies);
             Console.WriteLine(Map);
+            PrintInfo(Player, Enemies);
             do
             {
                 key = Console.ReadKey().Key;
-                Player.Move(key, Map.Field);
-                PlaceEntitiesOnField(Player, Enemies);
+                Player.Move(key, Map);
+                PlaceEntities(Player, Enemies);
                 Console.Clear();
                 Console.WriteLine(Map);
+                PrintInfo(Player, Enemies);
             } while (key != ConsoleKey.Enter);
 
         }
 
-        private void PlaceEntitiesOnField(Player player, LivingGameObject[] enemies)
+        private void PrintInfo(Player player, LivingGameObject[] enemies)
+        {
+            PrintPlayerInfo(player);
+            PrintEnemiesInfo(enemies);
+        }
+
+        private void PrintPlayerInfo(Player player)
+        {
+            Console.WriteLine($"Player: Hp {player.Hp}, Position {player.Position} \n");
+        }
+
+        private void PrintEnemiesInfo(LivingGameObject[] enemies)
+        {
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                Console.WriteLine($"Enemy {i + 1}: Hp {enemies[i].Hp}, Position {enemies[i].Position}");
+            }
+        }
+
+        private void PlaceEntities(Player player, LivingGameObject[] enemies)
         {
             PlacePlayer(player);
             PlaceEnemies(enemies);

@@ -16,5 +16,11 @@ namespace RogueLike.Components.Position
             Y = pos.Y;
             X = pos.X;
         }
+        public override string ToString()
+        {
+            return $"({Y}, {X})";
+        }
     }
+
+
 }

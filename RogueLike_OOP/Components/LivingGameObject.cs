@@ -1,4 +1,5 @@
 using RogueLike.Components.Position;
+using RogueLike.Core;
 
 namespace RogueLike.Components
 {
@@ -13,45 +14,55 @@ namespace RogueLike.Components
             Attack = attack;
         }
 
-        public void Move(ConsoleKey direction, GameObject[,] field)
+        public void Move(ConsoleKey direction, Map map)
         {
+            GameObject[,] field = map.Field;
             int y = Position.Y;
             int x = Position.X;
+            int dy = 0;
+            int dx = 0;
+            bool canPass = false;
             switch (direction)
             {
                 case ConsoleKey.W: case ConsoleKey.UpArrow:
-                    if (field[y - 1, x].Visitable && field[y - 1, x] is not HorizontalWall)
-                    {
-                        Position = new Position2D(y - 1, x);
-                        field[y, x].CurrentSymbol = field[y, x].DefaultSymbol;
-                    }
+                    dy = -1;
+                    dx = 0;
+                    if (field[y + dy, x + dx] is not HorizontalWall)
+                        canPass = true;
                     break;
                 case ConsoleKey.D: case ConsoleKey.RightArrow:
-                    if (field[y, x + 1].Visitable)
-                    {
-                        Position = new Position2D(y, x + 1);
-                        field[y, x].CurrentSymbol = field[y, x].DefaultSymbol;
-                    }
+                    dy = 0;
+                    dx = 1;
+                    canPass = true;
                     break;
                 case ConsoleKey.S: case ConsoleKey.DownArrow:
-                    if (field[y + 1, x].Visitable && field[y, x] is not HorizontalWall)
+                    dy = 1;
+                    dx = 0;
+                    if (field[y, x] is not HorizontalWall)
                     {
-                        Position = new Position2D(y + 1, x);
-                        field[y, x].CurrentSymbol = field[y, x].DefaultSymbol;
+                        canPass = true;
                     }
                     break;
                 case ConsoleKey.A: case ConsoleKey.LeftArrow:
-                    if (field[y, x - 1].Visitable)
-                    {
-                        Position = new Position2D(y, x - 1);
-                        field[y, x].CurrentSymbol = field[y, x].DefaultSymbol;
-                    }
+                    dy = 0;
+                    dx = -1;
+                    canPass = true;
                     break;
+            }
+            if (InBounds(new Position2D(y + dy, x + dx), map) && canPass && field[y + dy, x + dx].Visitable)
+            {
+                Position = new Position2D(y + dy, x + dx);
+                field[y, x].CurrentSymbol = field[y, x].DefaultSymbol;
             }
         }
         public void TakeDamage(int amount)
         {
             Hp -= amount;
+        }
+
+        private static bool InBounds(Position2D pos, Map map)
+        {
+            return 0 < pos.Y && pos.Y <= map.Depth - 1 && 0 < pos.X && pos.X < map.Width - 1;
         }
     }
 }
