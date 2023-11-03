@@ -9,10 +9,10 @@ namespace RogueLike.Components
         public string CurrentSymbol { get; set; }
         public bool BeingVisited { get; set; }
         public bool Visitable { get; set; }
-        public GameObject(string currentSymbol, Position2D pos, bool beingVisited = false, bool visitable = false, string defaultSymbol = " ")
+        public GameObject(Position2D pos, bool beingVisited = false, bool visitable = false, string defaultSymbol = " ")
         {
             DefaultSymbol = defaultSymbol;
-            CurrentSymbol = currentSymbol;
+            CurrentSymbol = DefaultSymbol;
             Position = pos;
             BeingVisited = beingVisited;
             Visitable = visitable;

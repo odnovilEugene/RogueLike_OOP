@@ -1,4 +1,6 @@
-﻿namespace RogueLike
+﻿using RogueLike.Components;
+
+namespace RogueLike
 {
     internal class Program
     {

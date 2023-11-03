@@ -4,16 +4,16 @@ namespace RogueLike.Components
 {
     public class Player : LivingGameObject
     {
-        public Player(Position2D pos) : base("P", pos, 10, 2) {}
+        public Player(Position2D pos) : base(pos, 10, 2, "P") {}
     }
 
     public class Zombie : LivingGameObject
     {
-        public Zombie(Position2D pos) : base("Z", pos, 3, 1) {}
+        public Zombie(Position2D pos) : base(pos, 3, 1, "Z") {}
     }
 
     public class Shooter : LivingGameObject
     {
-        public Shooter(Position2D pos) : base("S", pos, 1, 0) {}
+        public Shooter(Position2D pos) : base(pos, 1, 0, "S") {}
     }
 }

@@ -1,5 +1,3 @@
-using System.ComponentModel.Design;
-using System.IO.MemoryMappedFiles;
 using RogueLike.Components;
 using RogueLike.Components.Position;
 using RogueLike.Core;
@@ -29,9 +27,14 @@ namespace RogueLike
             {
                 Random rand = new();
                 Position2D enemyPos = new(rand.Next(1, Map.Depth - 1), rand.Next(1, Map.Width - 1));
-                if (Map.Field[enemyPos.Y, enemyPos.X] is EmptyCell)
+                int y = enemyPos.Y;
+                int x = enemyPos.X;
+                if ((Map.Field[y, x] is EmptyCell) || ((Map.Field[y, x] is HorizontalWall) && (Map.Field[y, x].CurrentSymbol == Map.Field[y, x].DefaultSymbol)))
                 {
-                    enemies[i] = new Zombie(new Position2D(enemyPos));
+                    if (rand.Next(0, 2) == 0)
+                        enemies[i] = new Zombie(new Position2D(enemyPos));
+                    else
+                        enemies[i] = new Shooter(new Position2D(enemyPos));
                     i++;
                 }
                 if (counter > 100)
@@ -71,14 +74,14 @@ namespace RogueLike
 
         private void PrintPlayerInfo(Player player)
         {
-            Console.WriteLine($"Player: Hp {player.Hp}, Position {player.Position} \n");
+            Console.WriteLine($"Player: Hp {player.Hp} / {player.MaxHp}, Position {player.Position} \n");
         }
 
         private void PrintEnemiesInfo(LivingGameObject[] enemies)
         {
             for (int i = 0; i < enemies.Length; i++)
             {
-                Console.WriteLine($"Enemy {i + 1}: Hp {enemies[i].Hp}, Position {enemies[i].Position}");
+                Console.WriteLine($"Enemy {i + 1}: Hp {enemies[i].Hp} / {enemies[i].MaxHp}, Position {enemies[i].Position}");
             }
         }
 
@@ -92,6 +95,7 @@ namespace RogueLike
         {
             int y = player.Position.Y;
             int x = player.Position.X;
+            Map.Field[y, x].BeingVisited = true;
             if (Map.Field[y, x] is HorizontalWall)
             {
                 Map.Field[y, x].CurrentSymbol = $"{player.CurrentSymbol}\u0332".Normalize();
@@ -104,6 +108,7 @@ namespace RogueLike
             {
                 int y = enemy.Position.Y;
                 int x = enemy.Position.X;
+                Map.Field[y, x].BeingVisited = true;
                 if (Map.Field[y, x] is HorizontalWall)
                 {
                     Map.Field[y, x].CurrentSymbol = $"{enemy.CurrentSymbol}\u0332".Normalize();
