@@ -18,7 +18,7 @@ namespace RogueLike.Components.Position
             Y = pos.Y;
             X = pos.X;
         }
-
+        
         public static bool operator ==(Position2D a, Position2D b)
         {
             return (a.Y == b.Y) && (a.X == b.X);

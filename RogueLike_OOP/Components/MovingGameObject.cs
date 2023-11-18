@@ -1,10 +1,9 @@
-using System.ComponentModel;
 using RogueLike.Components.Position;
 using RogueLike.Core;
 
 namespace RogueLike.Components
 {
-    public abstract class LivingGameObject : GameObject
+    public abstract class MovingGameObject : GameObject
     {
         public int MaxHp { get; set; }
         public int Hp { get; set; }
@@ -18,7 +17,12 @@ namespace RogueLike.Components
         }
 
 
-        public LivingGameObject(Position2D pos, int maxHp, int attack, string defaultSymbol) : base(pos, false, false, defaultSymbol) 
+        public MovingGameObject(Position2D pos,
+                                int maxHp,
+                                int attack,
+                                string defaultSymbol)
+                                :
+                                base(pos, false, false, defaultSymbol) 
         {
             MaxHp = maxHp;
             Hp = MaxHp;
@@ -29,9 +33,15 @@ namespace RogueLike.Components
         {
             Position = new Position2D(Position.Y + dy, Position.X + dx);
         }
+
+        public void Move(Position2D pos)
+        {
+            Position = pos;
+        }
         public void TakeDamage(int amount)
         {
             Hp -= amount;
+            Hp = Hp > MaxHp ? MaxHp : Hp;
         }
 
         public string GetInfo()

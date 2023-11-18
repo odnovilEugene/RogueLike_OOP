@@ -8,8 +8,8 @@ namespace RogueLike.Components
         public string DefaultSymbol { get; set; }
         public string CurrentSymbol { get; set; }
         public bool BeingVisited { get; set; }
-        public bool Visitable { get; set; }
-        public GameObject(Position2D pos, bool beingVisited = false, bool visitable = false, string defaultSymbol = " ")
+        public bool Visitable { get; }
+        public GameObject(Position2D pos, bool beingVisited, bool visitable, string defaultSymbol = " ")
         {
             DefaultSymbol = defaultSymbol;
             CurrentSymbol = DefaultSymbol;
@@ -20,7 +20,7 @@ namespace RogueLike.Components
 
         public override string ToString()
         {
-            return String.Format($"{CurrentSymbol}");
+            return string.Format($"{CurrentSymbol}");
         }
 
         public static string operator +(string a, GameObject b)
