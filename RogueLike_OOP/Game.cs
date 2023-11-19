@@ -21,7 +21,15 @@ namespace RogueLike
         {
             get
             {
-                return (Player.Hp <= 0) || (Enemies.Count == 0);
+                return Player.Hp <= 0;
+            }
+        }
+
+        private bool LevelDone
+        {
+            get
+            {
+                return (Enemies.Count == 0);
             }
         }
         
@@ -103,7 +111,7 @@ namespace RogueLike
             return staticObjects;
         }
        
-        public void UpdateToNextLevel()
+        private void UpdateToNextLevel()
         {
             Level++;
             Player.Position = new Position2D(1, 1);
@@ -113,24 +121,7 @@ namespace RogueLike
             Projectiles.Clear();
         }
 
-        public void GameCycle()
-        {   
-            ConsoleKey key;
-            do
-            {
-                key = StartGame();
-                if (key == ConsoleKey.Enter)
-                    break;
-                Console.Write("Continue to next level?\ny/n : ");
-                ConsoleKey answer = Console.ReadKey().Key;
-                if (answer == ConsoleKey.Y)
-                    UpdateToNextLevel();
-                else if (answer == ConsoleKey.N)
-                    break;
-            } while (key != ConsoleKey.Enter);
-        }
-
-        public ConsoleKey StartGame()
+        private ConsoleKey StartGame()
         {
             ConsoleKey key;
             PlaceEntities();
@@ -141,37 +132,13 @@ namespace RogueLike
                 MakeTurn(key);
                 Renderer.PrintGame(this);
 
-            } while ((key != ConsoleKey.Enter) && !IsGameOver);
+            } while ((key != ConsoleKey.Enter) && !LevelDone && !IsGameOver);
             return key;
-        }
-
-        private static (int, int) KeyToDirection(ConsoleKey key)
-        {
-            return key switch
-            {
-                ConsoleKey.W => (-1,0),
-                ConsoleKey.A => (0,-1),
-                ConsoleKey.S => (1, 0),
-                ConsoleKey.D => (0, 1),
-                _ => (0,0)
-            };
-        }
-
-        private static ConsoleKey DirectionToKey((int, int) direction)
-        {
-            return direction switch
-            {
-                (-1,0) => ConsoleKey.W,
-                (0,-1) => ConsoleKey.A,
-                (1, 0) => ConsoleKey.S,
-                (0, 1) => ConsoleKey.D,
-                _ => ConsoleKey.Enter
-            };
         }
 
         private void MoveObject(MovingGameObject gameObject, ConsoleKey key)
         {
-            (int dy, int dx) = KeyToDirection(key);
+            (int dy, int dx) = Utils.Utils.KeyToDirection(key);
             if (dy == 0 && dx == 0)
             {
                 return;
@@ -271,7 +238,7 @@ namespace RogueLike
             }
         }
 
-        private void EnemieMove(MovingGameObject enemy)
+        private void EnemyMove(MovingGameObject enemy)
         {
             var field = Map.Field;
             int y = enemy.Position.Y;
@@ -311,7 +278,7 @@ namespace RogueLike
                         MoveObject(zombie, keyToMove);
                         break;
                     case Shooter shooter:
-                        (int dy, int dx) = KeyToDirection(keyToMove);
+                        (int dy, int dx) = Utils.Utils.KeyToDirection(keyToMove);
                         if (!field[y + dy, x + dx].BeingVisited)
                             Projectiles.Add(shooter.Shoot((dy, dx)));
                         break;
@@ -344,7 +311,7 @@ namespace RogueLike
                             MoveObject(enemy, keyToMove);
                             break;
                         case Shooter shooter:
-                            (int dy, int dx) = KeyToDirection(keyToMove);
+                            (int dy, int dx) = Utils.Utils.KeyToDirection(keyToMove);
                             if (!field[y + dy, x + dx].BeingVisited)
                                 Projectiles.Add(shooter.Shoot((dy, dx)));
                             break;
@@ -354,7 +321,7 @@ namespace RogueLike
 
         private void ProjectileMove(Projectile projectile)
         {
-            MoveObject(projectile, DirectionToKey(projectile.Direction));
+            MoveObject(projectile, Utils.Utils.DirectionToKey(projectile.Direction));
         }
 
         private void MakeTurn(ConsoleKey key)
@@ -366,7 +333,7 @@ namespace RogueLike
             }
             foreach (var enemy in Enemies.ToList())
             {
-                EnemieMove(enemy);
+                EnemyMove(enemy);
             }
             PlaceEntities();
         }
@@ -439,6 +406,38 @@ namespace RogueLike
         private bool InBounds(Position2D pos)
         {
             return 0 < pos.Y && pos.Y <= Map.Depth - 1 && 0 < pos.X && pos.X < Map.Width - 1;
+        }
+    
+        public void GameCycle()
+        {   
+            ConsoleKey key;
+            do
+            {
+                key = StartGame();
+                if (IsGameOver)
+                {
+                    Console.Clear();
+                    Console.WriteLine("GAME OVER!");
+                    break;
+                }
+                if (key == ConsoleKey.Enter)
+                {
+                    Console.Clear();
+                    Console.WriteLine("You exited the game!");
+                    break;
+                }
+                ConsoleKey answer;
+                do 
+                {
+                    Console.Clear();
+                    Console.Write("Continue to next level?\ny/n : ");
+                    answer = Console.ReadKey().Key;
+                } while ((answer != ConsoleKey.Y) && (answer != ConsoleKey.N));
+                if (answer == ConsoleKey.Y)
+                    UpdateToNextLevel();
+                else if (answer == ConsoleKey.N)
+                    break;
+            } while (key != ConsoleKey.Enter);
         }
     }
 }

@@ -12,5 +12,29 @@ namespace RogueLike.Utils
             }
             return array;
         }
+
+        public static (int, int) KeyToDirection(ConsoleKey key)
+        {
+            return key switch
+            {
+                ConsoleKey.W => (-1,0),
+                ConsoleKey.A => (0,-1),
+                ConsoleKey.S => (1, 0),
+                ConsoleKey.D => (0, 1),
+                _ => (0,0)
+            };
+        }
+
+        public static ConsoleKey DirectionToKey((int, int) direction)
+        {
+            return direction switch
+            {
+                (-1,0) => ConsoleKey.W,
+                (0,-1) => ConsoleKey.A,
+                (1, 0) => ConsoleKey.S,
+                (0, 1) => ConsoleKey.D,
+                _ => ConsoleKey.Enter
+            };
+        }
     }
 }
